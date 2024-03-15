@@ -1,0 +1,22 @@
+{
+  "name": "MonoMenu",
+  "version": "0.1.0",
+  "description": "A (flexible) menu system based on u8g2",
+  "keywords": "display, monochrome, u8g2, menu",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/chris-dot-exe/monomenu.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Christian Exenberger",
+      "url": "https://github.com/chris-dot-exe"
+    }
+  ],
+  "license": "GPLv3",
+  "homepage": "https://github.com/chris-dot-exe",
+  "frameworks": "*",
+  "platforms": "*"
+}
