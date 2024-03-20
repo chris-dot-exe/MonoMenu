@@ -103,7 +103,45 @@ public:
                       float max, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
                       bool visible = true);
 
-    // Overloaded methods for adding input items with callback functions.
+    /**
+     * @brief Adds an input item with an icon to the menu.
+     *
+     * @param label The label for the input item.
+     * @param title The title for the input item.
+     * @param pre The prefix for the input item value display.
+     * @param post The postfix for the input item value display.
+     * @param min The minimum value for the input item.
+     * @param max The maximum value for the input item.
+     * @param onSave The callback function to be executed when the item is activated.
+     * @param value Reference to the variable storing the input value.
+     * @param step The step size for adjusting the input value.
+     * @param stepFast The step size for fast adjustment of the input value.
+     * @param isInt Flag indicating if the input is an integer.
+     * @param visible Flag indicating if the item is initially visible.
+    */
+    void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
+                      float max, const std::function<void()>& onSave, double &value,  float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
+
+    /**
+     * @brief Adds an input item with an icon to the menu.
+     *
+     * @param label The label for the input item.
+     * @param title The title for the input item.
+     * @param pre The prefix for the input item value display.
+     * @param post The postfix for the input item value display.
+     * @param min The minimum value for the input item.
+     * @param max The maximum value for the input item.
+     * @param onSave The callback function to be executed when the item is activated.
+     * @param value Reference to the variable storing the input value.
+     * @param icon The icon for the input item.
+     * @param step The step size for adjusting the input value.
+     * @param stepFast The step size for fast adjustment of the input value.
+     * @param isInt Flag indicating if the input is an integer.
+     * @param visible Flag indicating if the item is initially visible.
+    */
+    void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
+                      float max, const std::function<void()>& onSave, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
+                      bool visible = true);
 
     /**
      * @brief Adds a toggle item to the menu.
@@ -114,7 +152,37 @@ public:
     */
     void AddToggleItem(const char *label, bool &value, bool visible = true);
 
-    // Overloaded methods for adding toggle items with icons and callback functions.
+
+    /**
+     * @brief Adds a toggle item to the menu.
+     *
+     * @param label The label for the toggle item.
+     * @param value Reference to the boolean variable representing the toggle state.
+     * @param icon The icon for the input item.
+     * @param visible Flag indicating if the item is initially visible.
+    */
+    void AddToggleItem(const char *label, bool &value, const unsigned char *icon, bool visible = true);
+
+    /**
+     * @brief Adds a toggle item to the menu.
+     *
+     * @param label The label for the toggle item.
+     * @param onSave The callback function to be executed when the item is activated.
+     * @param value Reference to the boolean variable representing the toggle state.
+     * @param visible Flag indicating if the item is initially visible.
+    */
+    void AddToggleItem(const char *label, const std::function<void()>& onSave, bool &value, bool visible = true);
+
+    /**
+     * @brief Adds a toggle item to the menu.
+     *
+     * @param label The label for the toggle item.
+     * @param onSave The callback function to be executed when the item is activated.
+     * @param value Reference to the boolean variable representing the toggle state.
+     * @param icon The icon for the input item.
+     * @param visible Flag indicating if the item is initially visible.
+    */
+    void AddToggleItem(const char *label, const std::function<void()>& onSave, bool &value, const unsigned char *icon, bool visible = true);
 
     /**
      * @brief Adds a submenu to the menu.
@@ -125,7 +193,15 @@ public:
     */
     void AddSubMenu(const char *label, Menu &menu, bool visible = true);
 
-    // Overloaded method for adding a submenu with an icon.
+    /**
+     * @brief Adds a submenu to the menu.
+     *
+     * @param label The label for the submenu.
+     * @param menu Reference to the submenu to be added.
+     * @param icon The icon for the input item.
+     * @param visible Flag indicating if the submenu is initially visible.
+    */
+    void AddSubMenu(const char *label, Menu &menu, const unsigned char *icon, bool visible = true);
 
     /**
      * @brief Adds a back item to the menu.
@@ -134,7 +210,13 @@ public:
     */
     void AddBackItem(const char *label);
 
-    // Overloaded method for adding a back item with an icon.
+    /**
+     * @brief Adds a back item to the menu.
+     *
+     * @param label The label for the back item.
+     * @param icon The icon for the input item.
+    */
+    void AddBackItem(const char *label, const unsigned char *icon);
 
     /**
      * @brief Sets the event handler for menu events.

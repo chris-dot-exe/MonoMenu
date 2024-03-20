@@ -59,7 +59,42 @@ public:
     MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst, float  minInst, float  maxInst,
                   double  &valueInst, std::function<void()> onSaveInst, const unsigned char *iconInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
 
-    // Overloaded constructors for MenuInputItem.
+    /**
+     * @brief Constructs a MenuInputItem object with the specified parameters including an icon.
+     *
+     * @param labelInst The label of the menu item.
+     * @param titleInst The title of the input item.
+     * @param preInst The prefix for displaying the input value.
+     * @param postInst The postfix for displaying the input value.
+     * @param minInst The minimum value allowed for the input.
+     * @param maxInst The maximum value allowed for the input.
+     * @param valueInst Reference to the variable storing the input value.
+     * @param stepInst The step size for adjusting the input value.
+     * @param stepFastInst The step size for fast adjustment of the input value.
+     * @param isIntInst Flag indicating if the input value is an integer.
+     * @param visibleInst Flag indicating if the menu item is initially visible.
+    */
+    MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst, float  minInst, float  maxInst,
+                  double  &valueInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
+
+    /**
+     * @brief Constructs a MenuInputItem object with the specified parameters including an icon.
+     *
+     * @param labelInst The label of the menu item.
+     * @param titleInst The title of the input item.
+     * @param preInst The prefix for displaying the input value.
+     * @param postInst The postfix for displaying the input value.
+     * @param minInst The minimum value allowed for the input.
+     * @param maxInst The maximum value allowed for the input.
+     * @param valueInst Reference to the variable storing the input value.
+     * @param iconInst The icon displayed for the input item.
+     * @param stepInst The step size for adjusting the input value.
+     * @param stepFastInst The step size for fast adjustment of the input value.
+     * @param isIntInst Flag indicating if the input value is an integer.
+     * @param visibleInst Flag indicating if the menu item is initially visible.
+    */
+    MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst, float  minInst, float  maxInst,
+                  double  &valueInst, const unsigned char *iconInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
 
     /**
      * @brief Draws the input item on the display.
