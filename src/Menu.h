@@ -17,16 +17,18 @@
 #include "types.h"
 
 
+
 namespace std {
     template<typename T, typename... Args>
     std::unique_ptr<T> make_unique(Args&&... args) {
-        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+      return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
 }
 
+
 /**
  * @class Menu control class
- * @brief This class provides a display menu 
+ * @brief This class provides a display menu
 */
 
 class Menu {
@@ -35,18 +37,14 @@ public:
 /**
      * @enum InputType
      * @brief Type of input for the menu
-     * @details The menu can be used flexible. Input handler is passed as lambda.
+     * @details The menu can either be controlled by a rotary encoder with a button or three buttons for up, down and enter
     */
 
 
     /**
      * @brief Constructor
      *
-     * @param gpioEnter GPIO pin of shaft switch or enter button
-     * @param gpioA GPIO pin of rotary encoder output A or Up button
-     * @param gpioB GPIO pin of rotary encoder output B or Down button
      * @param display u8g2 instance of selected display
-     * @param inputType Input type for the menu. Either ROTARY or BUTTONS
     */
 
     Menu(U8G2 &displayInst);
@@ -60,11 +58,11 @@ public:
     void Loop();
 
     void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
-                 float max, double &value, float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
+                      float max, double &value, float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
 
     void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
-                 float max, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
-                 bool visible = true);
+                      float max, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
+                      bool visible = true);
 
     void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
                       float max, const std::function<void()>& onSave, double &value,  float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
@@ -96,14 +94,12 @@ private:
     U8G2 &display;
     bool isOpen = false;
     long lastMenuAbort = 0;
-    long const abortInterval = 3000;
+    long const abortInterval = 2500;
     int capacity = 100;
     int itemCount = 0;
-    std::vector<std::unique_ptr<MenuItem>> items;
-    std::vector<int> visibleItems;
-    uint8_t itemSelected = 0;
-    uint8_t itemPrevious = 0;
-    uint8_t itemNext = 1;
+    int visibleItemCount = 0;
+    std::vector<std::shared_ptr<MenuItem>> items;
+    std::vector<std::shared_ptr<MenuItem>> visibleItems;
     uint8_t offset = 0;
     uint8_t activeItem = 0;
     static const uint8_t itemsPerPage = 3;
@@ -123,5 +119,5 @@ private:
     void addItem(Args&&... args);
 
 
-
+    void checkVisibleItems();
 };
