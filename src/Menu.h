@@ -6,7 +6,6 @@
 #pragma once
 
 #include <cstdint>
-#include "userConfig.h"
 #include "clib/u8g2.h"
 #include "Logger.h"
 #include "items/MenuItem.h"

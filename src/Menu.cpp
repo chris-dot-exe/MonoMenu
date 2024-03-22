@@ -21,7 +21,7 @@ void Menu::Close() {
 }
 
 void Menu::holdEvent() {
-  if (this->buttonHold >= EventType::EVENT_NONE) {
+  if (this->buttonHold > EventType::EVENT_NONE) {
     if (this->visibleItems[this->activeItem]->ScreenActive()) {
       if (millis() - this->buttonHoldStartTime >= this->buttonHoldThreshold) {
         if (millis() - this->buttonHoldStartTime >= buttonHoldThresholdFast) {
@@ -29,10 +29,20 @@ void Menu::holdEvent() {
             this->visibleItems[this->activeItem]->UpFast();
           } else if (this->buttonHold == EventType::EVENT_DOWN) {
             this->visibleItems[this->activeItem]->DownFast();
+          } else if (this->buttonHold == EventType::EVENT_ENTER) {
+            if (this->visibleItems[this->activeItem]->ScreenActive()) {
+              //LOG(DEBUG, "Processing Enter button held, active screen aborting.");
+              this->visibleItems[this->activeItem]->Abort();
+            } else {
+              //LOG(DEBUG, "Processing Enter button held, aborting.");
+              //LOG(DEBUG, "Close menu");
+
+              this->Close();
+            }
           }
 
         } else if (millis() - this->buttonHoldStartTime >= this->abortInterval) {
-          LOG(DEBUG, "holdEvent abort");
+          //LOG(DEBUG, "holdEvent abort");
         } else {
           if (this->buttonHold == EventType::EVENT_UP) {
             this->visibleItems[this->activeItem]->Up();
@@ -112,7 +122,7 @@ void Menu::addItem(Args &&... args) {
     this->visibleItemCount += 1;
   }
 
-  LOGF(DEBUG, "Added Item");
+  //LOGF(DEBUG, "Added Item");
 }
 
 void Menu::AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min, float max,
@@ -180,7 +190,11 @@ void Menu::SetEventHandler(std::function<void()> function) {
 }
 
 void Menu::Event(EventType type, EventState state) {
-  LOGF(DEBUG, "Event type: %d state: %d Active: %d", type, state, this->visibleItems[this->activeItem]->GetType());
+  if (state == EventState::STATE_NONE) {
+    return;
+  }
+
+  //LOGF(DEBUG, "Event type: %d state: %d Active: %d", type, state, this->visibleItems[this->activeItem]->GetType());
 
   if (this->visibleItems[this->activeItem]->GetType() == ITEM_SUBMENU &&
       this->visibleItems[this->activeItem]->ScreenActive()) {
@@ -191,44 +205,35 @@ void Menu::Event(EventType type, EventState state) {
   switch (type) {
     case EventType::EVENT_ENTER:
       if (state == EventState::STATE_DOWN) {
+        //LOG(DEBUG, "Processing Enter Down Click");
+        this->buttonHold = type;
+        this->buttonHoldStartTime = millis();
         this->enterState = state;
-      } else if (state == STATE_UP) {
-        LOG(DEBUG, "Processing Enter Up Click");
+      } else if (state == EventState::STATE_UP) {
         if (this->enterState == EventState::STATE_DOWN) {
           if (this->IsOpen()) {
-            LOG(DEBUG, "Menu already open");
+            //LOG(DEBUG, "Menu already open");
             if (this->visibleItems[this->activeItem]->ScreenActive()) {
               this->visibleItems[this->activeItem]->Enter();
             } else {
               this->visibleItems[this->activeItem]->Action();
             }
+
+            this->buttonHold = type;
+            this->buttonHoldStartTime = millis();
           } else {
-            LOG(DEBUG, "Menu opening");
+            //LOG(DEBUG, "Menu opening");
             this->Open();
           }
         }
-        this->enterState = EventState::STATE_UP;
-      } else if (state == EventState::STATE_HELD) {
-        long abortTime = millis();
-        if (abortTime - this->lastMenuAbort > this->abortInterval) {
-          if (this->enterState == EventState::STATE_DOWN) {
-            if (this->visibleItems[this->activeItem]->ScreenActive()) {
-              LOG(DEBUG, "Processing Enter button held, active screen aborting.");
-              this->visibleItems[this->activeItem]->Abort();
-            } else {
-              LOG(DEBUG, "Processing Enter button held, aborting.");
-              lastMenuAbort = abortTime;
-              LOG(DEBUG, "Close menu");
-              this->Close();
-            }
-          }
-        }
-        this->enterState = EventState::STATE_HELD;
+
+        this->buttonHold = EventType::EVENT_NONE;
+        this->buttonHoldStartTime = 0;
       }
       break;
     case EventType::EVENT_UP:
       if (state == EventState::STATE_DOWN) {
-        LOG(DEBUG, "Processing Up Click");
+        //LOG(DEBUG, "Processing Up Click");
         this->buttonHold = type;
         this->buttonHoldStartTime = millis();
         if (this->visibleItems[this->activeItem]->ScreenActive()) {
@@ -251,7 +256,7 @@ void Menu::Event(EventType type, EventState state) {
       break;
     case EventType::EVENT_DOWN:
       if (state == EventState::STATE_DOWN) {
-        LOG(DEBUG, "Processing Down Click");
+        //LOG(DEBUG, "Processing Down Click");
         this->buttonHold = EventType::EVENT_DOWN;
         this->buttonHoldStartTime = millis();
         if (this->visibleItems[this->activeItem]->ScreenActive()) {

@@ -37,7 +37,7 @@ MenuItem::MenuItem(const char *labelInst, std::function<void()> onSaveInst, cons
 
 void MenuItem::onSave() {
     if (this->onSaveFunc) {
-        LOG(DEBUG, "onSave");
+        //LOG(DEBUG, "onSave");
         this->onSaveFunc();
     }
 }

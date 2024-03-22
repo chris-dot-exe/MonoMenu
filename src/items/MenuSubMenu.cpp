@@ -58,7 +58,7 @@ void MenuSubMenu::Draw(U8G2 &display, int offsetY, bool active) {
 }
 
 void MenuSubMenu::Event(EventType evType, EventState evState) {
-    LOG(DEBUG, "Submenu Events");
+    ////LOG(DEBUG, "Submenu Events");
     this->varMenu.Event(evType, evState);
 }
 
