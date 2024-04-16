@@ -133,7 +133,7 @@ void Menu::AddInputItem(const char *label, const char *title, const char *pre, c
 }
 
 void Menu::AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min, float max,
-                        const std::function<void()> &onSave, double &value, const unsigned char *icon,
+                        OnSaveFunction &onSave, double &value, const unsigned char *icon,
                         float step, float stepFast, bool isInt, bool visible) {
 
   this->addItem<MenuInputItem>(label, title, pre, post, min, max,
@@ -142,7 +142,7 @@ void Menu::AddInputItem(const char *label, const char *title, const char *pre, c
 }
 
 void Menu::AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min, float max,
-                        const std::function<void()> &onSave, double &value, float step, float stepFast, bool isInt,
+                        OnSaveFunction &onSave, double &value, float step, float stepFast, bool isInt,
                         bool visible) {
 
   this->addItem<MenuInputItem>(label, title, pre, post, min, max,
@@ -158,11 +158,11 @@ void Menu::AddToggleItem(const char *label, bool &value, const unsigned char *ic
   this->addItem<MenuToggleItem>(label, value, icon, visible);
 }
 
-void Menu::AddToggleItem(const char *label, const std::function<void()> &onSave, bool &value, bool visible) {
+void Menu::AddToggleItem(const char *label, OnSaveFunction &onSave, bool &value, bool visible) {
   this->addItem<MenuToggleItem>(label, value, onSave, visible);
 }
 
-void Menu::AddToggleItem(const char *label, const std::function<void()> &onSave, bool &value, const unsigned char *icon,
+void Menu::AddToggleItem(const char *label, OnSaveFunction &onSave, bool &value, const unsigned char *icon,
                          bool visible) {
   this->addItem<MenuToggleItem>(label, value, onSave, icon, visible);
 }

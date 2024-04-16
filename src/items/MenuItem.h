@@ -41,7 +41,7 @@ public:
      * @param iconInst The icon for the menu item.
      * @param visibleInst Flag indicating the initial visibility of the menu item.
     */
-    MenuItem(const char* labelInst, std::function<void()> onSaveInst, const unsigned char *iconInst, bool visibleInst= true);
+    MenuItem(const char* labelInst, OnSaveFunction onSaveInst, const unsigned char *iconInst, bool visibleInst= true);
 
     /**
      * @brief Constructs a MenuItem object with the specified label, callback function, and visibility.
@@ -50,7 +50,7 @@ public:
      * @param onSaveInst The callback function to be executed when the item is activated.
      * @param visibleInst Flag indicating the initial visibility of the menu item.
     */
-    MenuItem(const char *labelInst, std::function<void()> onSaveInst, bool visibleInst);
+    MenuItem(const char *labelInst, OnSaveFunction onSaveInst, bool visibleInst);
 
     /**
      * @brief Checks if the menu item is visible.
@@ -154,6 +154,7 @@ private:
     const char* label; ///< The label of the menu item.
     char* workingLabel; ///< Working label of the menu item.
     const unsigned char *icon; ///< The icon of the menu item.
+    bool hasIcon; ///< Flag to determine if the menu item has a icon
     bool visible; ///< Visibility of the menu item.
     std::function<void()> onSaveFunc; ///< Callback function to be executed when the item is activated.
 

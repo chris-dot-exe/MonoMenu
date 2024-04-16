@@ -18,3 +18,5 @@ enum EventState {
     STATE_UP,
     STATE_HELD
 };
+
+using OnSaveFunction = std::function<void()>;

@@ -16,7 +16,7 @@ MenuInputItem::MenuInputItem(const char *labelInst, const char *titleInst, const
 }
 
 MenuInputItem::MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst,
-                             float minInst, float maxInst, double &valueInst, std::function<void()> onSaveInst, float stepInst, float stepFastInst,
+                             float minInst, float maxInst, double &valueInst, OnSaveFunction onSaveInst, float stepInst, float stepFastInst,
                              bool isIntInst, bool visibleInst)
         : MenuItem(labelInst, onSaveInst, visibleInst), value(valueInst), title(titleInst),
           pre(preInst), min(minInst), max(maxInst), post(postInst), step(stepInst), stepFast(stepFastInst), isInt(isIntInst) {
@@ -24,7 +24,7 @@ MenuInputItem::MenuInputItem(const char *labelInst, const char *titleInst, const
 }
 
 MenuInputItem::MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst,
-                             float minInst, float maxInst, double &valueInst, std::function<void()> onSaveInst, const unsigned char *iconInst,
+                             float minInst, float maxInst, double &valueInst, OnSaveFunction onSaveInst, const unsigned char *iconInst,
                              float stepInst, float stepFastInst, bool isIntInst, bool visibleInst)
         : MenuItem(labelInst, onSaveInst, iconInst, visibleInst), value(valueInst), title(titleInst),
           pre(preInst), min(minInst), max(maxInst), post(postInst), step(stepInst), stepFast(stepFastInst), isInt(isIntInst) {

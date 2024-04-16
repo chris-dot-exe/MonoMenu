@@ -37,7 +37,7 @@ public:
      * @param visibleInst Flag indicating if the menu item is initially visible.
     */
     MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst, float  minInst, float  maxInst,
-                  double  &valueInst, std::function<void()> onSaveInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
+                  double  &valueInst, OnSaveFunction onSaveInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
 
     /**
      * @brief Constructs a MenuInputItem object with the specified parameters including an icon.
@@ -57,7 +57,7 @@ public:
      * @param visibleInst Flag indicating if the menu item is initially visible.
     */
     MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst, float  minInst, float  maxInst,
-                  double  &valueInst, std::function<void()> onSaveInst, const unsigned char *iconInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
+                  double  &valueInst, OnSaveFunction onSaveInst, const unsigned char *iconInst, float stepInst=0.1, float stepFastInst=0.5, bool isIntInst=false, bool visibleInst = true);
 
     /**
      * @brief Constructs a MenuInputItem object with the specified parameters including an icon.

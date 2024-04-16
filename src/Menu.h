@@ -16,7 +16,6 @@
 #include "types.h"
 
 
-
 namespace std {
     template<typename T, typename... Args>
     std::unique_ptr<T> make_unique(Args&&... args) {
@@ -119,7 +118,7 @@ public:
      * @param visible Flag indicating if the item is initially visible.
     */
     void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
-                      float max, const std::function<void()>& onSave, double &value,  float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
+                      float max, OnSaveFunction &onSave, double &value,  float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
 
     /**
      * @brief Adds an input item with an icon to the menu.
@@ -139,7 +138,7 @@ public:
      * @param visible Flag indicating if the item is initially visible.
     */
     void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
-                      float max, const std::function<void()>& onSave, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
+                      float max, OnSaveFunction &onSave, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
                       bool visible = true);
 
     /**
@@ -170,7 +169,7 @@ public:
      * @param value Reference to the boolean variable representing the toggle state.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddToggleItem(const char *label, const std::function<void()>& onSave, bool &value, bool visible = true);
+    void AddToggleItem(const char *label, OnSaveFunction &onSave, bool &value, bool visible = true);
 
     /**
      * @brief Adds a toggle item to the menu.
@@ -181,7 +180,7 @@ public:
      * @param icon The icon for the input item.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddToggleItem(const char *label, const std::function<void()>& onSave, bool &value, const unsigned char *icon, bool visible = true);
+    void AddToggleItem(const char *label, OnSaveFunction &onSave, bool &value, const unsigned char *icon, bool visible = true);
 
     /**
      * @brief Adds a submenu to the menu.

@@ -9,12 +9,12 @@ MenuToggleItem::MenuToggleItem(const char *labelInst, bool  &valueInst, const un
         : MenuItem(labelInst, iconInst, visibleInst), value(valueInst)   {
 }
 
-MenuToggleItem::MenuToggleItem(const char *labelInst, bool  &valueInst, std::function<void()> onSaveInst, bool visibleInst)
+MenuToggleItem::MenuToggleItem(const char *labelInst, bool  &valueInst, OnSaveFunction onSaveInst, bool visibleInst)
         : MenuItem(labelInst, onSaveInst, visibleInst), value(valueInst) {
 
 }
 
-MenuToggleItem::MenuToggleItem(const char *labelInst, bool  &valueInst, std::function<void()> onSaveInst, const unsigned char *iconInst, bool visibleInst)
+MenuToggleItem::MenuToggleItem(const char *labelInst, bool  &valueInst, OnSaveFunction onSaveInst, const unsigned char *iconInst, bool visibleInst)
         : MenuItem(labelInst, onSaveInst, iconInst, visibleInst), value(valueInst)   {
 }
 

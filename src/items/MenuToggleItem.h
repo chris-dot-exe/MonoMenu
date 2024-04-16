@@ -41,7 +41,7 @@ public:
      * @param onSaveInst The callback function to be executed when the toggle item state changes.
      * @param visibleInst Flag indicating the initial visibility of the toggle item.
     */
-    MenuToggleItem(const char *labelInst, bool &valueInst, std::function<void()> onSaveInst, bool visibleInst = true);
+    MenuToggleItem(const char *labelInst, bool &valueInst, OnSaveFunction onSaveInst, bool visibleInst = true);
 
     /**
      * @brief Constructs a MenuToggleItem object with the specified label, value, callback function, icon, and visibility.
@@ -52,7 +52,7 @@ public:
      * @param iconInst The icon for the toggle item.
      * @param visibleInst Flag indicating the initial visibility of the toggle item.
     */
-    MenuToggleItem(const char *labelInst, bool &valueInst, std::function<void()> onSaveInst, const unsigned char *iconInst, bool visibleInst = true);
+    MenuToggleItem(const char *labelInst, bool &valueInst, OnSaveFunction onSaveInst, const unsigned char *iconInst, bool visibleInst = true);
 
     // Overridden method for drawing the toggle item.
 
