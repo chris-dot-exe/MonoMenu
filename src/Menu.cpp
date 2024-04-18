@@ -17,6 +17,8 @@ bool Menu::IsOpen() {
 }
 
 void Menu::Close() {
+  this->offset = 0;
+  this->activeItem = 0;
   this->isOpen = false;
 }
 
