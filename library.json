@@ -1,6 +1,6 @@
 {
   "name": "MonoMenu",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A (flexible) menu system based on u8g2",
   "keywords": "display, monochrome, u8g2, menu",
   "repository":
