@@ -235,6 +235,31 @@ public:
      * @param state The state of the event.
     */
     void Event(EventType type, EventState state);
+
+    /**
+     * @brief Invert menu item input
+     *
+     */
+    void InvertMenuInput();
+
+    /**
+     * @brief Invert input for menu scrolling
+     *
+     */
+     void InvertScrollInput();
+    /**
+     * @brief Invert menu item input
+     *
+     * @param invert Invert menu input
+     */
+    void InvertMenuInput(bool invert);
+
+    /**
+     * @brief Invert input for menu scrolling
+     *
+     * @param invert Invert scroll input
+     */
+     void InvertScrollInput(bool invert);
 private:
 
 
@@ -268,5 +293,9 @@ private:
     void addItem(Args&&... args);
 
 
+    bool invertScrollInput = false;
+    bool invertMenuInput = false;
     void checkVisibleItems();
+    void itemMinus();
+    void itemPlus();
 };

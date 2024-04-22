@@ -170,10 +170,16 @@ void Menu::AddToggleItem(const char *label, OnSaveFunction onSave, bool &value, 
 }
 
 void Menu::AddSubMenu(const char *label, Menu &menu, bool visible) {
+  menu.invertScrollInput = this->invertScrollInput;
+  menu.invertMenuInput = this->invertMenuInput;
+
   this->addItem<MenuSubMenu>(label, menu, visible);
 }
 
 void Menu::AddSubMenu(const char *label, Menu &menu, const unsigned char *icon, bool visible) {
+  menu.invertScrollInput = this->invertScrollInput;
+  menu.invertMenuInput = this->invertMenuInput;
+
   this->addItem<MenuSubMenu>(label, icon, menu, visible);
 }
 
@@ -234,16 +240,16 @@ void Menu::Event(EventType type, EventState state) {
         this->buttonHold = type;
         this->buttonHoldStartTime = millis();
         if (this->visibleItems[this->activeItem]->ScreenActive()) {
-          this->visibleItems[this->activeItem]->Up();
-        } else {
-          if (this->activeItem > 0) {
-            this->activeItem--;
-            if (this->activeItem < this->offset) {
-              this->offset = this->activeItem;
-            }
+          if (this->invertMenuInput) {
+            this->visibleItems[this->activeItem]->Down();
           } else {
-            this->activeItem = this->visibleItemCount - 1;
-            this->offset = std::max(0, this->visibleItemCount - 3);
+            this->visibleItems[this->activeItem]->Up();
+          }
+        } else {
+          if (this->invertScrollInput) {
+            this->itemMinus();
+          } else {
+            this->itemPlus();
           }
         }
       } else if (state == EventState::STATE_UP) {
@@ -257,16 +263,16 @@ void Menu::Event(EventType type, EventState state) {
         this->buttonHold = EventType::EVENT_DOWN;
         this->buttonHoldStartTime = millis();
         if (this->visibleItems[this->activeItem]->ScreenActive()) {
-          this->visibleItems[this->activeItem]->Down();
-        } else {
-          if (this->activeItem < this->visibleItemCount - 1) {
-            this->activeItem++;
-            if (this->activeItem >= this->offset + 3) {
-              this->offset = this->activeItem - 2;
-            }
+          if (this->invertMenuInput) {
+            this->visibleItems[this->activeItem]->Up();
           } else {
-            this->activeItem = 0;
-            this->offset = 0;
+            this->visibleItems[this->activeItem]->Down();
+          }
+        } else {
+          if (this->invertScrollInput) {
+            this->itemPlus();
+          } else {
+            this->itemMinus();
           }
         }
       } else if (state == EventState::STATE_UP) {
@@ -303,3 +309,44 @@ void Menu::checkVisibleItems() {
     }
   }
 }
+
+void Menu::itemPlus() {
+  if (this->activeItem < this->visibleItemCount - 1) {
+    this->activeItem++;
+    if (this->activeItem >= this->offset + 3) {
+      this->offset = this->activeItem - 2;
+    }
+  } else {
+    this->activeItem = 0;
+    this->offset = 0;
+  }
+}
+
+void Menu::itemMinus() {
+  if (this->activeItem > 0) {
+    this->activeItem--;
+    if (this->activeItem < this->offset) {
+      this->offset = this->activeItem;
+    }
+  } else {
+    this->activeItem = this->visibleItemCount - 1;
+    this->offset = std::max(0, this->visibleItemCount - 3);
+  }
+}
+
+void Menu::InvertMenuInput(bool invert) {
+  this->invertMenuInput = invert;
+}
+
+void Menu::InvertScrollInput(bool invert) {
+  this->invertScrollInput = invert;
+}
+
+void Menu::InvertMenuInput() {
+  this->invertMenuInput = true;
+}
+
+void Menu::InvertScrollInput() {
+  this->invertScrollInput = true;
+}
+
