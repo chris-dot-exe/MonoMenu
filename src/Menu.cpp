@@ -342,11 +342,3 @@ void Menu::InvertScrollInput(bool invert) {
   this->invertScrollInput = invert;
 }
 
-void Menu::InvertMenuInput() {
-  this->invertMenuInput = true;
-}
-
-void Menu::InvertScrollInput() {
-  this->invertScrollInput = true;
-}
-

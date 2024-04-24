@@ -239,17 +239,6 @@ public:
     /**
      * @brief Invert menu item input
      *
-     */
-    void InvertMenuInput();
-
-    /**
-     * @brief Invert input for menu scrolling
-     *
-     */
-     void InvertScrollInput();
-    /**
-     * @brief Invert menu item input
-     *
      * @param invert Invert menu input
      */
     void InvertMenuInput(bool invert);
@@ -293,8 +282,8 @@ private:
     void addItem(Args&&... args);
 
 
-    bool invertScrollInput = false;
-    bool invertMenuInput = false;
+    bool &invertScrollInput = false;
+    bool &invertMenuInput = false;
     void checkVisibleItems();
     void itemMinus();
     void itemPlus();
