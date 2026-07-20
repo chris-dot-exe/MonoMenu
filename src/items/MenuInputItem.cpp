@@ -141,30 +141,23 @@ void MenuInputItem::drawInputScreen(U8G2 &display) {
 
 void MenuInputItem::Up() {
     this->workingVal += this->step;
-    if(this->workingVal >= this->max) {
-        this->workingVal = this->max;
-    }
+    if(this->workingVal >= this->max) this->workingVal = this->max;
+    if(this->workingVal <= this->min) this->workingVal = this->min;
 }
-
 void MenuInputItem::UpFast() {
     this->workingVal += this->stepFast;
-    if(this->workingVal >= this->max) {
-        this->workingVal = this->max;
-    }
+    if(this->workingVal >= this->max) this->workingVal = this->max;
+    if(this->workingVal <= this->min) this->workingVal = this->min;
 }
-
 void MenuInputItem::Down() {
     this->workingVal -= this->step;
-    if(this->workingVal <= this->min) {
-        this->workingVal = this->min;
-    }
+    if(this->workingVal >= this->max) this->workingVal = this->max;
+    if(this->workingVal <= this->min) this->workingVal = this->min;
 }
-
 void MenuInputItem::DownFast() {
     this->workingVal -= this->stepFast;
-    if(this->workingVal <= this->min) {
-        this->workingVal = this->min;
-    }
+    if(this->workingVal >= this->max) this->workingVal = this->max;
+    if(this->workingVal <= this->min) this->workingVal = this->min;
 }
 
 void MenuInputItem::Enter() {
