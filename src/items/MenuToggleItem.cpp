@@ -1,4 +1,5 @@
 #include "MenuToggleItem.h"
+#include "../Menu.h"
 
 MenuToggleItem::MenuToggleItem(const char *labelInst, bool  &valueInst, bool visibleInst)
         : MenuItem(labelInst, visibleInst), value(valueInst) {
@@ -72,6 +73,18 @@ void MenuToggleItem::Draw(U8G2 &display, int offsetY, bool active) {
 }
 
 void MenuToggleItem::Action() {
-    this->value = !this->value;
-    this->onSave();
+    auto combinedAction = [this]() {
+        this->value = !this->value;
+        this->onSave();
+
+        if (this->customConfirmAction) {
+            this->customConfirmAction();
+        }
+    };
+
+    if (this->HasConfirm() && this->menu) {
+        this->menu->OpenConfirmDialog(this->confirmText, combinedAction);
+    } else {
+        combinedAction();
+    }
 }

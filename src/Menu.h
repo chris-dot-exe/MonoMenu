@@ -9,12 +9,19 @@
 #include "clib/u8g2.h"
 #include "Logger.h"
 #include "items/MenuItem.h"
+#include <memory>
 #include <U8g2lib.h>
-#include <memory> // For std::unique_ptr
 #include <utility>
 #include "icons/menuIcons.h"
 #include "types.h"
 
+class MenuItem;
+class MenuInputItem;
+class MenuToggleItem;
+class MenuEnumItem;
+class MenuInfoItem;
+class MenuSubMenu;
+class MenuBackItem;
 
 namespace std {
     template<typename T, typename... Args>
@@ -55,13 +62,35 @@ public:
 
     /**
      * @brief Closes the menu.
-    */
+     */
     void Close();
+
+    /**
+     * @brief Opens the confirm dialog.
+     */
+    void OpenConfirmDialog(const char* text, std::function<void()> onOkAction);
+
+    /**
+     * @brief Gets the most recently added menu item.
+     * 
+     * @return A pointer to the last added MenuItem, or nullptr if none exists.
+     */
+    MenuItem* GetLastItem() {
+        if (!this->items.empty()) {
+            return this->items.back().get();
+        }
+        return nullptr;
+    }
 
     /**
      * @brief Handles menu navigation and input events.
     */
     void Loop();
+
+    static void InvertMenuInput(bool invert);
+    static void InvertMenuInput(bool* invert);
+    static void InvertScrollInput(bool invert);
+    static void InvertScrollInput(bool* invert);
 
     /**
      * @brief Adds an input item to the menu.
@@ -78,7 +107,7 @@ public:
      * @param isInt Flag indicating if the input is an integer.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
+    MenuInputItem* AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
                       float max, double &value, float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
 
     /**
@@ -97,7 +126,7 @@ public:
      * @param isInt Flag indicating if the input is an integer.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
+    MenuInputItem* AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
                       float max, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
                       bool visible = true);
 
@@ -117,7 +146,7 @@ public:
      * @param isInt Flag indicating if the input is an integer.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
+    MenuInputItem* AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
                       float max, OnSaveFunction onSave, double &value,  float step=0.1, float stepFast=0.5, bool isInt=false, bool visible = true);
 
     /**
@@ -137,7 +166,7 @@ public:
      * @param isInt Flag indicating if the input is an integer.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
+    MenuInputItem* AddInputItem(const char *label, const char *title, const char *pre, const char *post, float min,
                       float max, OnSaveFunction onSave, double &value, const unsigned char *icon, float step=0.1, float stepFast=0.5, bool isInt=false,
                       bool visible = true);
 
@@ -148,7 +177,7 @@ public:
      * @param value Reference to the boolean variable representing the toggle state.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddToggleItem(const char *label, bool &value, bool visible = true);
+    MenuToggleItem* AddToggleItem(const char *label, bool &value, bool visible = true);
 
 
     /**
@@ -159,7 +188,7 @@ public:
      * @param icon The icon for the input item.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddToggleItem(const char *label, bool &value, const unsigned char *icon, bool visible = true);
+    MenuToggleItem* AddToggleItem(const char *label, bool &value, const unsigned char *icon, bool visible = true);
 
     /**
      * @brief Adds a toggle item to the menu.
@@ -169,7 +198,7 @@ public:
      * @param value Reference to the boolean variable representing the toggle state.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddToggleItem(const char *label, OnSaveFunction onSave, bool &value, bool visible = true);
+    MenuToggleItem* AddToggleItem(const char *label, OnSaveFunction onSave, bool &value, bool visible = true);
 
     /**
      * @brief Adds a toggle item to the menu.
@@ -180,7 +209,71 @@ public:
      * @param icon The icon for the input item.
      * @param visible Flag indicating if the item is initially visible.
     */
-    void AddToggleItem(const char *label, OnSaveFunction onSave, bool &value, const unsigned char *icon, bool visible = true);
+    MenuToggleItem* AddToggleItem(const char *label, OnSaveFunction onSave, bool &value, const unsigned char *icon, bool visible = true);
+
+    /**
+     * @brief Adds an enum item to the menu.
+     *
+     * @param label The label for the item.
+     * @param title The title for the sub-screen.
+     * @param options Pointer to the array of strings for the options.
+     * @param numOptions Number of elements in the options array.
+     * @param value Reference to the selected option index.
+     * @param visible Flag indicating if the item is initially visible.
+    */
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, const char* const* options, uint8_t numOptions, uint8_t &value, bool visible = true);
+
+    /**
+     * @brief Adds an enum item to the menu with an icon.
+     */
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, const char* const* options, uint8_t numOptions, uint8_t &value, const unsigned char *icon, bool visible = true);
+
+    /**
+     * @brief Adds an enum item to the menu with a callback function.
+     */
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, const char* const* options, uint8_t numOptions, uint8_t &value, OnSaveFunction onSave, bool visible = true);
+
+    /**
+     * @brief Adds an enum item to the menu with an icon and callback function.
+     */
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, const char* const* options, uint8_t numOptions, uint8_t &value, OnSaveFunction onSave, const unsigned char *icon, bool visible = true);
+
+    /**
+     * @brief Template wrappers to automatically deduce the number of options from an array.
+     */
+    template<typename T, size_t N>
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, T (&options)[N], uint8_t &value, bool visible = true) {
+        return this->AddEnumItem(label, title, (const char* const*)options, N, value, visible);
+    }
+
+    template<typename T, size_t N>
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, T (&options)[N], uint8_t &value, const unsigned char *icon, bool visible = true) {
+        return this->AddEnumItem(label, title, (const char* const*)options, N, value, icon, visible);
+    }
+
+    template<typename T, size_t N>
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, T (&options)[N], uint8_t &value, OnSaveFunction onSave, bool visible = true) {
+        return this->AddEnumItem(label, title, (const char* const*)options, N, value, onSave, visible);
+    }
+
+    template<typename T, size_t N>
+    MenuEnumItem* AddEnumItem(const char *label, const char *title, T (&options)[N], uint8_t &value, OnSaveFunction onSave, const unsigned char *icon, bool visible = true) {
+        return this->AddEnumItem(label, title, (const char* const*)options, N, value, onSave, icon, visible);
+    }
+
+    /**
+     * @brief Adds an info list item to the menu.
+     *
+     * @param label The label for the item in the main menu.
+     * @param entries The vector of label/value entries to display.
+     * @param visible Flag indicating if the item is initially visible.
+     */
+    MenuInfoItem* AddInfoItem(const char *label, const std::vector<MenuInfoEntry>& entries, bool visible = true);
+
+    /**
+     * @brief Adds an info list item to the menu with an icon.
+     */
+    MenuInfoItem* AddInfoItem(const char *label, const std::vector<MenuInfoEntry>& entries, const unsigned char *icon, bool visible = true);
 
     /**
      * @brief Adds a submenu to the menu.
@@ -189,7 +282,7 @@ public:
      * @param menu Reference to the submenu to be added.
      * @param visible Flag indicating if the submenu is initially visible.
     */
-    void AddSubMenu(const char *label, Menu &menu, bool visible = true);
+    MenuSubMenu* AddSubMenu(const char *label, Menu &menu, bool visible = true);
 
     /**
      * @brief Adds a submenu to the menu.
@@ -199,14 +292,14 @@ public:
      * @param icon The icon for the input item.
      * @param visible Flag indicating if the submenu is initially visible.
     */
-    void AddSubMenu(const char *label, Menu &menu, const unsigned char *icon, bool visible = true);
+    MenuSubMenu* AddSubMenu(const char *label, Menu &menu, const unsigned char *icon, bool visible = true);
 
     /**
      * @brief Adds a back item to the menu.
      *
      * @param label The label for the back item.
     */
-    void AddBackItem(const char *label);
+    MenuBackItem* AddBackItem(const char *label);
 
     /**
      * @brief Adds a back item to the menu.
@@ -214,7 +307,7 @@ public:
      * @param label The label for the back item.
      * @param icon The icon for the input item.
     */
-    void AddBackItem(const char *label, const unsigned char *icon);
+    MenuBackItem* AddBackItem(const char *label, const unsigned char *icon);
 
     /**
      * @brief Sets the event handler for menu events.
@@ -235,6 +328,28 @@ public:
      * @param state The state of the event.
     */
     void Event(EventType type, EventState state);
+
+    /**
+     * @brief Sets the timeout active status for the menu.
+     *
+     * @param status The timeout active status.
+    */
+    void TimeoutActive(bool status);
+
+    /**
+     * @brief Sets the timeout limit for the menu.
+     *
+     * @param timeoutSec The timeout limit in seconds.
+    */
+    void SetTimeout(double timeoutSec);
+
+    /**
+     * @brief Gets the timeout limit for the menu.
+     *
+     * @return The timeout limit in seconds.
+    */
+    double GetTimeout() const;
+
 private:
 
 
@@ -255,6 +370,10 @@ private:
     int itemHeight = this->display.getHeight() / itemsPerPage;
     int yOffset[itemsPerPage];
 
+    bool timeoutActive = false;
+    uint32_t timeoutLimit = 0; // Timeout limit in milliseconds
+    uint32_t lastInteraction = 0; // Last interaction timestamp
+
     EventType buttonHold = EventType::EVENT_NONE;
     unsigned short buttonHoldThreshold = 500;
     unsigned short buttonHoldThresholdFast = 1500;
@@ -265,8 +384,25 @@ private:
     void holdEvent();
 
     template<typename T, typename... Args>
-    void addItem(Args&&... args);
+    T* addItem(Args&&... args);
+
+    static bool invertInput;
+    static bool* invertInputPtr;
+    static bool invertScroll;
+    static bool* invertScrollPtr;
+    
+    bool isConfirmDialogOpen = false;
+    int confirmDialogSelection = 0;
+    std::function<void()> pendingConfirmAction = nullptr;
+    const char* confirmDialogText = nullptr;
 
 
     void checkVisibleItems();
 };
+
+#include "items/MenuInputItem.h"
+#include "items/MenuToggleItem.h"
+#include "items/MenuEnumItem.h"
+#include "items/MenuInfoItem.h"
+#include "items/MenuSubMenu.h"
+#include "items/MenuBackItem.h"
