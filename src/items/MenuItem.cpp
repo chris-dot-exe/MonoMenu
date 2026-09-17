@@ -1,5 +1,6 @@
 #include "MenuItem.h"
-
+#include <Arduino.h>
+#include "../Menu.h"
 #include <utility>
 #include "U8g2lib.h"
 #include "Logger.h"
@@ -13,7 +14,20 @@ const char *MenuItem::GetLabel() {
 }
 
 const unsigned char *MenuItem::GetIcon() {
-  return hasIcon ? icon : nullptr;
+    return hasIcon ? icon : nullptr;
+}
+
+void MenuItem::SetMenu(Menu* m) {
+    this->menu = m;
+}
+
+void MenuItem::SetConfirm(const char* text, std::function<void()> customAction) {
+    this->confirmText = text;
+    this->customConfirmAction = customAction;
+}
+
+bool MenuItem::HasConfirm() const {
+    return this->confirmText != nullptr;
 }
 
 
@@ -40,5 +54,18 @@ void MenuItem::onSave() {
     //LOG(DEBUG, "onSave");
     this->onSaveFunc();
   }
+}
+
+void MenuItem::Action() {
+    auto combinedAction = [this]() {
+        this->onSave();
+        if (this->customConfirmAction) this->customConfirmAction();
+    };
+
+    if (this->HasConfirm() && this->menu) {
+        this->menu->OpenConfirmDialog(this->confirmText, combinedAction);
+    } else {
+        combinedAction();
+    }
 }
 

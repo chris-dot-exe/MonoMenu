@@ -1,4 +1,5 @@
 #include "MenuInputItem.h"
+#include "../Menu.h"
 
 MenuInputItem::MenuInputItem(const char *labelInst, const char *titleInst, const char *preInst, const char *postInst,
                              float minInst, float maxInst, double &valueInst, float stepInst, float stepFastInst,
@@ -161,10 +162,22 @@ void MenuInputItem::DownFast() {
 }
 
 void MenuInputItem::Enter() {
-    this->value = this->workingVal;
-    this->editing = false;
-    this->activeScreen = false;
-    this->onSave();
+    auto combinedAction = [this]() {
+        this->value = this->workingVal;
+        this->editing = false;
+        this->activeScreen = false;
+        this->onSave();
+
+        if (this->customConfirmAction) {
+            this->customConfirmAction();
+        }
+    };
+
+    if (this->HasConfirm() && this->menu) {
+        this->menu->OpenConfirmDialog(this->confirmText, combinedAction);
+    } else {
+        combinedAction();
+    }
 }
 
 void MenuInputItem::Abort() {

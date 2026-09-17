@@ -13,6 +13,8 @@
  * @class MenuItem
  * @brief Represents an item in a menu.
 */
+class Menu;
+
 class MenuItem {
 public:
 
@@ -87,7 +89,7 @@ public:
     /**
      * @brief Performs the action associated with the menu item.
     */
-    virtual void Action() {};
+    virtual void Action();
 
     /**
      * @brief Checks if the screen associated with the menu item is active.
@@ -138,7 +140,28 @@ public:
      * @param evState The state of the event.
     */
     virtual void Event(EventType evType, EventState evState) {};
+    
+    /**
+     * @brief Sets the parent menu.
+     */
+    void SetMenu(Menu* menu);
 
+    /**
+     * @brief Sets the confirm text and optional custom action.
+     */
+    void SetConfirm(const char* text, std::function<void()> customAction = nullptr);
+
+    /**
+     * @brief Checks if a confirm dialog is configured.
+     */
+    bool HasConfirm() const;
+
+protected:
+    Menu* menu = nullptr;
+    const char* confirmText = nullptr;
+    std::function<void()> customConfirmAction = nullptr;
+
+public:
     /**
      * @brief Gets the type of the menu item.
      *
