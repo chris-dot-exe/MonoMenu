@@ -162,6 +162,13 @@ void MenuInputItem::DownFast() {
 }
 
 void MenuInputItem::Enter() {
+    // using small tolerance since workingVal and value are double
+    if (this->workingVal >= this->value - 0.0001 && this->workingVal <= this->value + 0.0001) {
+        this->editing = false;
+        this->activeScreen = false;
+        return;
+    }
+
     auto combinedAction = [this]() {
         this->value = this->workingVal;
         this->editing = false;

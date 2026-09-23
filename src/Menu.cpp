@@ -314,6 +314,8 @@ void Menu::Event(EventType type, EventState state) {
         this->isConfirmDialogOpen = false;
         if (this->confirmDialogSelection == 1 && this->pendingConfirmAction) {
           this->pendingConfirmAction();
+        } else if (this->confirmDialogSelection == 0) {
+          this->visibleItems[this->activeItem]->Abort();
         }
         this->enterState = EventState::STATE_UP;
       } else if (state == EventState::STATE_DOWN) {

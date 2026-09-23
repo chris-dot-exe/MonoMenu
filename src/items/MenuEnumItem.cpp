@@ -143,6 +143,12 @@ void MenuEnumItem::Down() {
 }
 
 void MenuEnumItem::Enter() {
+    if (this->workingVal == this->value) {
+        this->editing = false;
+        this->activeScreen = false;
+        return;
+    }
+
     auto combinedAction = [this]() {
         this->value = this->workingVal;
         this->editing = false;
