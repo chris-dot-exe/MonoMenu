@@ -144,8 +144,8 @@ void Menu::Loop() {
         uint8_t btnW = 35;
         uint8_t btnH = 14;
         uint8_t btnY = boxY + boxH - 18;
-        uint8_t cancelX = boxX + 10;
-        uint8_t okX = boxX + boxW - 10 - btnW;
+        uint8_t okX = boxX + 10;
+        uint8_t cancelX = boxX + boxW - 10 - btnW;
         
         // Draw Cancel Button
         if (this->confirmDialogSelection == 0) {
