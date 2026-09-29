@@ -328,16 +328,17 @@ void Menu::Event(EventType type, EventState state) {
   if (type == EventType::EVENT_UP || type == EventType::EVENT_DOWN) {
       bool isSubMenu = this->visibleItems[this->activeItem]->GetType() == ITEM_SUBMENU;
       bool isActive = this->visibleItems[this->activeItem]->ScreenActive();
+      bool isInfoItem = this->visibleItems[this->activeItem]->GetType() == ITEM_INFO;
       
       bool currentInvertInput = Menu::invertInputPtr != nullptr ? *(Menu::invertInputPtr) : Menu::invertInput;
       bool currentInvertScroll = Menu::invertScrollPtr != nullptr ? *(Menu::invertScrollPtr) : Menu::invertScroll;
       
       // Invert input if we are editing an input item (not a submenu)
-      if (isActive && !isSubMenu && currentInvertInput) {
+      if (isActive && !isSubMenu && !isInfoItem && currentInvertInput) {
           type = (type == EventType::EVENT_UP) ? EventType::EVENT_DOWN : EventType::EVENT_UP;
       } 
       // Invert scroll if we are navigating the menu (not editing an item)
-      else if (!isActive && currentInvertScroll) {
+      else if ((!isActive || isInfoItem) && currentInvertScroll) {
           type = (type == EventType::EVENT_UP) ? EventType::EVENT_DOWN : EventType::EVENT_UP;
       }
   }
